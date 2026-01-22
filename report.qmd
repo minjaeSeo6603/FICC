@@ -1,0 +1,99 @@
+---
+title: "Corporate Bond Valuation Under Credit Risk"
+subtitle: "FICC Derivatives Trading Case Study"
+author: "Minjae Seo"
+date: today
+format:
+  pdf:
+    documentclass: article
+    geometry:
+      - margin=0.7in
+      - top=0.6in
+      - bottom=0.6in
+    fontsize: 10pt
+    linestretch: 1.05
+    pdf-engine: pdflatex
+    include-in-header:
+      text: |
+        \usepackage{amsmath, amssymb}
+        \usepackage{booktabs}
+        \usepackage{enumitem}
+        \setlist{nosep, leftmargin=*}
+        \pagestyle{plain}
+---
+
+## Problem Setup
+
+A **5-year unsecured corporate bond** pays a 6% annual coupon (Face Value $F = \$100$). The risk-free rate is 4% (flat). The conditional default probability is $\lambda = 5\%$ per year.
+
+**Key Formulas:**
+$$S(t) = (1-\lambda)^t = 0.95^t \quad \text{(Survival Prob.)} \qquad D(t) = (1+r)^{-t} = 1.04^{-t} \quad \text{(Discount Factor)}$$
+
+| Year | $S(t)$ | $D(t)$ | $S(t) \cdot D(t)$ | $P_d(t) = S(t-1) \cdot \lambda$ |
+|:----:|:------:|:------:|:-----------------:|:-------------------------------:|
+| 1 | 0.9500 | 0.9615 | 0.9135 | 0.0500 |
+| 2 | 0.9025 | 0.9246 | 0.8344 | 0.0475 |
+| 3 | 0.8574 | 0.8890 | 0.7622 | 0.0451 |
+| 4 | 0.8145 | 0.8548 | 0.6962 | 0.0429 |
+| 5 | 0.7738 | 0.8219 | 0.6358 | 0.0407 |
+| $\Sigma$ | | | **3.8421** | **0.2262** |
+
+## Part (a): Bond Value with Zero Recovery
+
+$$V = \sum_{t=1}^{5} C \cdot S(t) \cdot D(t) + F \cdot S(5) \cdot D(5) = 6 \times 3.8421 + 100 \times 0.6358$$
+
+$$\boxed{\textbf{Answer (a):} \quad V = 23.05 + 63.58 = \mathbf{\$86.63}}$$
+
+## Part (b): Credit Spread with Zero Recovery
+
+Solve for YTM $y$ where $86.63 = \sum_{t=1}^{5} \frac{6}{(1+y)^t} + \frac{100}{(1+y)^5}$
+
+| $y$ | 9.0% | 9.5% | **9.48%** | 10.0% |
+|:---:|:----:|:----:|:---------:|:-----:|
+| Price | \$88.33 | \$86.56 | **\$86.63** | \$84.83 |
+
+$$\boxed{\textbf{Answer (b):} \quad s = y - r = 9.48\% - 4.00\% = \mathbf{548 \text{ bps}}}$$
+
+
+## Part (c): Bond Value with \$70 Recovery
+
+With recovery $R = \$70$, add expected recovery: $PV_{rec} = \sum_{t=1}^{5} R \cdot P_d(t) \cdot D(t)$
+
+| Year | $P_d(t)$ | $R \times P_d(t) \times D(t)$ |
+|:----:|:--------:|:-----------------------------:|
+| 1 | 0.0500 | $70 \times 0.0500 \times 0.9615 = 3.37$ |
+| 2 | 0.0475 | $70 \times 0.0475 \times 0.9246 = 3.07$ |
+| 3 | 0.0451 | $70 \times 0.0451 \times 0.8890 = 2.81$ |
+| 4 | 0.0429 | $70 \times 0.0429 \times 0.8548 = 2.57$ |
+| 5 | 0.0407 | $70 \times 0.0407 \times 0.8219 = 2.34$ |
+| **Total** | | **\$14.16** |
+
+$$\boxed{\textbf{Answer (c):} \quad V = 23.05 + 63.58 + 14.16 = \mathbf{\$100.79}}$$
+
+## Part (d): Credit Spread with \$70 Recovery
+
+Solve for YTM: $100.79 = \sum_{t=1}^{5} \frac{6}{(1+y)^t} + \frac{100}{(1+y)^5}$
+
+| $y$ | 5.5% | 5.8% | **5.81%** | 6.0% |
+|:---:|:----:|:----:|:---------:|:----:|
+| Price | \$102.16 | \$100.84 | **\$100.79** | \$100.00 |
+
+$$\boxed{\textbf{Answer (d):} \quad s = 5.81\% - 4.00\% = \mathbf{181 \text{ bps}}}$$
+
+## Table with all outcomes
+
+| Metric | Zero Recovery ($R=\$0$) | With Recovery ($R=\$70$) | $\Delta$ Change |
+|:-------|:-----------------------:|:------------------------:|:---------------:|
+| **Bond Value** | \$86.63 | \$100.79 | **+\$14.16** (+16.4%) |
+| **YTM** | 9.48% | 5.81% | -3.67% |
+| **Credit Spread** | 548 bps | 181 bps | **-367 bps** |
+
+## Summary
+
+1. Both scenarios share identical 5% default probability, yet spreads differ by 367 bps. This demonstrates that credit spreads primarily compensate for *loss severity* (LGD), not just default frequency.
+
+2. With 70% recovery, the bond trades above par (\$100.79), indicating the 6% coupon adequately compensates for residual credit risk.
+
+3. Accurate recovery modeling—through seniority analysis, collateral valuation, and covenant review—is essential for relative value trading and risk management in credit markets.
+
+For your reference, the full source code for this analysis is available in the [GitHub Repository](https://github.com/minjaeSeo6603/FICC).
