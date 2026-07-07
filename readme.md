@@ -1,7 +1,6 @@
 # FICC Case Study
 
-This repository contains my case study analysis and deliverables for the Hanwha Investment & Securities FICC Derivatives Trading role.
-
+This repository contains my case study analysis and deliverables.
 ## Table of Contents
 - [Repository Structure](#repository-structure)
 - [Files](#files)
